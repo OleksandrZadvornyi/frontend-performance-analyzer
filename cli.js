@@ -4,6 +4,7 @@ import puppeteer from "puppeteer";
 import lighthouse from "lighthouse";
 import fs from "fs";
 import path from "path";
+import chalk from "chalk";
 
 const program = new Command();
 
@@ -17,6 +18,28 @@ program
   .parse(process.argv);
 
 const options = program.opts();
+
+function formatMetrics(lhr) {
+  const audits = lhr.audits;
+
+  const metrics = {
+    "First Contentful Paint": audits["first-contentful-paint"].displayValue,
+    "Speed Index": audits["speed-index"].displayValue,
+    "Largest Contentful Paint": audits["largest-contentful-paint"].displayValue,
+    "Time to Interactive": audits["interactive"].displayValue,
+    "Total Blocking Time": audits["total-blocking-time"].displayValue,
+    "Cumulative Layout Shift": audits["cumulative-layout-shift"].displayValue,
+  };
+
+  console.log(chalk.green.bold(`\n📊 Performance Metrics for ${lhr.finalUrl}`));
+  console.log(
+    chalk.yellow(`Score: ${lhr.categories.performance.score * 100}/100\n`)
+  );
+
+  for (const [key, value] of Object.entries(metrics)) {
+    console.log(`${chalk.cyan(key)}: ${chalk.white(value)}`);
+  }
+}
 
 async function runLighthouse(url) {
   const browser = await puppeteer.launch({
@@ -38,9 +61,7 @@ async function runLighthouse(url) {
   try {
     const { lhr, report } = await runLighthouse(options.url);
 
-    console.log(
-      `✅ Performance score: ${lhr.categories.performance.score * 100}`
-    );
+    formatMetrics(lhr);
 
     if (options.json) {
       console.log(JSON.stringify(lhr, null, 2));
