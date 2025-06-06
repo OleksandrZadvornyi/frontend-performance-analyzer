@@ -17,6 +17,11 @@ program
   .option("-o, --output <file>", "Save HTML report to file")
   .option("--json", "Print raw JSON report to stdout")
   .option("--markdown <file>", "Save metrics as Markdown report")
+  .option(
+    "--threshold <score>",
+    "Minimum acceptable Lighthouse performance score (0-100)",
+    parseFloat
+  )
   .parse(process.argv);
 
 const options = program.opts();
@@ -127,6 +132,18 @@ async function runLighthouse(url) {
       if (options.markdown) {
         const safeUrl = url.replace(/https?:\/\//, "").replace(/[^\w]/g, "_");
         exportMarkdown(lhr, `${safeUrl}.md`);
+      }
+
+      if (options.threshold !== undefined) {
+        const actualScore = lhr.categories.performance.score * 100;
+        if (actualScore < options.threshold) {
+          console.warn(
+            chalk.red(
+              `⚠️ Score ${actualScore} is below threshold of ${options.threshold}`
+            )
+          );
+          process.exitCode = 1; // does not exit immediately, just sets failure
+        }
       }
     } catch (err) {
       console.error(`❌ Failed for ${url}:`, err.message);
