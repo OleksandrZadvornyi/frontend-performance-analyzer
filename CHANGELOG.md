@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.4](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/compare/v0.1.3...v0.1.4) (2025-06-06)
+
+
+### ✨ Features
+
+* **cli:** add score threshold check ([96ce47a](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/96ce47af676336c533f82f6be438076d8e806a2e))
+* **cli:** support multiple URLs ([b03a597](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/b03a597ba3dcfa66d354b233a1f810f796fc4afa))
+
+
+### 🐛 Bug Fixes
+
+* **cli:** exit with non-zero on fail ([cc59f06](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/cc59f063a24abe30576858ea33f53f80a89c08a4))
+
+
+### 🛠 Maintenance
+
+* prepare `package.json` for npm publish ([eb3fb72](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/eb3fb72c3ee389d51c4810364ec74f7b2b7d94b4))
+
+
+### 📝 Documentation
+
+* create `README.md` ([ff31897](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/ff318972e35e5e533432f7821fbc60992c5fc1ca))
+
 ### [0.1.3](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/compare/v0.1.2...v0.1.3) (2025-06-06)
 
 
