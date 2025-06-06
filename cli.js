@@ -12,7 +12,8 @@ program
   .name("frontend-performance-analyzer")
   .description("Analyze frontend performance of a given URL")
   .version("0.1.1")
-  .requiredOption("-u, --url <url>", "URL to analyze")
+  .option("-u, --url <url...>", "One or more URLs to analyze")
+  .option("--input <file>", "Load URLs from a .txt or .json file")
   .option("-o, --output <file>", "Save HTML report to file")
   .option("--json", "Print raw JSON report to stdout")
   .option("--markdown <file>", "Save metrics as Markdown report")
@@ -68,6 +69,28 @@ function exportMarkdown(lhr, filePath) {
   console.log(`📝 Markdown report saved to ${filePath}`);
 }
 
+function getUrlList(options) {
+  let urls = [];
+
+  if (options.input) {
+    const filePath = path.resolve(process.cwd(), options.input);
+    const content = fs.readFileSync(filePath, "utf-8");
+
+    if (filePath.endsWith(".json")) {
+      urls = JSON.parse(content);
+    } else {
+      urls = content
+        .split("\n")
+        .map((line) => line.trim())
+        .filter(Boolean);
+    }
+  } else if (options.url) {
+    urls = options.url;
+  }
+
+  return urls;
+}
+
 async function runLighthouse(url) {
   const browser = await puppeteer.launch({
     headless: true,
@@ -85,26 +108,28 @@ async function runLighthouse(url) {
 }
 
 (async () => {
-  try {
-    const { lhr, report } = await runLighthouse(options.url);
+  const urls = getUrlList(options);
 
-    formatMetrics(lhr);
+  for (const url of urls) {
+    try {
+      const { lhr, report } = await runLighthouse(url);
+      formatMetrics(lhr);
 
-    if (options.json) {
-      console.log(JSON.stringify(lhr, null, 2));
+      if (options.json) {
+        console.log(JSON.stringify(lhr, null, 2));
+      }
+
+      if (options.output) {
+        const safeUrl = url.replace(/https?:\/\//, "").replace(/[^\w]/g, "_");
+        fs.writeFileSync(`${safeUrl}.html`, report);
+      }
+
+      if (options.markdown) {
+        const safeUrl = url.replace(/https?:\/\//, "").replace(/[^\w]/g, "_");
+        exportMarkdown(lhr, `${safeUrl}.md`);
+      }
+    } catch (err) {
+      console.error(`❌ Failed for ${url}:`, err.message);
     }
-
-    if (options.output) {
-      const outputPath = path.resolve(process.cwd(), options.output);
-      fs.writeFileSync(outputPath, report);
-      console.log(`💾 Report saved to ${outputPath}`);
-    }
-
-    if (options.markdown) {
-      exportMarkdown(lhr, path.resolve(process.cwd(), options.markdown));
-    }
-  } catch (err) {
-    console.error("❌ Failed to analyze:", err.message);
-    process.exit(1);
   }
 })();
