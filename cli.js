@@ -147,6 +147,7 @@ async function runLighthouse(url) {
       }
     } catch (err) {
       console.error(`❌ Failed for ${url}:`, err.message);
+      process.exitCode = 1;
     }
   }
 })();
