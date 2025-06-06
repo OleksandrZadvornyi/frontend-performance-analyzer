@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.3](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/compare/v0.1.2...v0.1.3) (2025-06-06)
+
+
+### 🛠 Maintenance
+
+* **deps:** add chalk for color output ([2c2dec8](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/2c2dec8bed17fbc327f036b7c925920c142ffebf))
+
+
+### ✨ Features
+
+* **cli:** show key performance metrics ([de39fa6](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/de39fa63cc68cf5d0487be8a56d7fcbd4f3ebcdb))
+* **cli:** support Markdown report export ([9f6e3a9](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/9f6e3a9b54a0f4a510ccbbef35f7ff97616e7b00))
+
 ### [0.1.2](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/compare/v0.1.1...v0.1.2) (2025-06-06)
 
 
