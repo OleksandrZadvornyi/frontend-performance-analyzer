@@ -1,0 +1,88 @@
+name: Version and Changelog
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  version:
+    name: Version and Changelog
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+
+      - name: Install dependencies
+        run: |
+          npm install -g standard-version
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+      - name: Bump version and generate changelog
+        run: |
+          standard-version --skip.tag
+
+      - name: Get version
+        id: get_version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create Git tag
+        run: |
+          git tag v${{ steps.get_version.outputs.version }}
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+          tags: true
+
+      - name: Extract latest changelog entry
+        run: |
+          #!/bin/bash
+          echo "## 🚀 What's Changed" > RELEASE_NOTES.md
+          echo "" >> RELEASE_NOTES.md
+
+          # Skip header lines and extract first version block
+          in_version=false
+          while IFS= read -r line; do
+            if [[ $line =~ ^##+ ]]; then
+              if [[ $line =~ \[[0-9]+\.[0-9]+\.[0-9]+\] ]]; then
+                if [ "$in_version" = true ]; then
+                  break
+                fi
+                in_version=true
+                continue
+              fi
+            fi
+            
+            if [ "$in_version" = true ] && [[ ! $line =~ ^(# Changelog|All notable) ]]; then
+              echo "$line" >> RELEASE_NOTES.md
+            fi
+          done < CHANGELOG.md
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ steps.get_version.outputs.version }}
+          name: Frontend Performance Analyzer v${{ steps.get_version.outputs.version }}
+          body_path: RELEASE_NOTES.md
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cleanup temporary files
+        run: rm -f RELEASE_NOTES.md

@@ -1,0 +1,16 @@
+{
+  "types": [
+    { "type": "feat", "section": "✨ Features" },
+    { "type": "fix", "section": "🐛 Bug Fixes" },
+    { "type": "chore", "section": "🛠 Maintenance" },
+    { "type": "docs", "section": "📝 Documentation" },
+    { "type": "style", "section": "💄 Styling" },
+    { "type": "refactor", "section": "♻️ Code Refactoring" },
+    { "type": "perf", "section": "⚡️ Performance" },
+    { "type": "test", "section": "✅ Testing" },
+    { "type": "build", "section": "📦 Build" },
+    { "type": "ci", "section": "👷 CI/CD" }
+  ],
+  "commitUrlFormat": "{{host}}/{{owner}}/{{repository}}/commit/{{hash}}",
+  "compareUrlFormat": "{{host}}/{{owner}}/{{repository}}/compare/{{previousTag}}...{{currentTag}}"
+}
