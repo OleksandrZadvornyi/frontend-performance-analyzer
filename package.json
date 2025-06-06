@@ -9,5 +9,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "module",
+  "dependencies": {
+    "lighthouse": "^12.6.1",
+    "puppeteer": "^24.10.0"
+  }
 }
