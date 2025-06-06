@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.2](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/compare/v0.1.1...v0.1.2) (2025-06-06)
+
+
+### 🛠 Maintenance
+
+* **deps:** add commander for CLI support ([a7a5401](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/a7a540119747dabc1905b67a19bc259cd9f8e18f))
+
+
+### ✨ Features
+
+* **cli:** add basic CLI with URL option ([d9db3ce](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/d9db3ceac90024f3d9318d6fc906bfeb2b31f3ca))
+
 ### 0.1.1 (2025-06-06)
 
 
