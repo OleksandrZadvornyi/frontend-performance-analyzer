@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.6](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/compare/v0.1.5...v0.1.6) (2025-06-07)
+
+
+### 📝 Documentation
+
+* update `README.md` ([4a6b745](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/4a6b745f765bcfd65b5b7e6764bb01e952602fd1))
+
 ### [0.1.5](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/compare/v0.1.4...v0.1.5) (2025-06-07)
 
 
