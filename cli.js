@@ -6,12 +6,16 @@ import fs from "fs";
 import path from "path";
 import chalk from "chalk";
 
+const packageJsonPath = path.resolve("package.json");
+const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
+const version = packageJson.version;
+
 const program = new Command();
 
 program
   .name("frontend-performance-analyzer")
   .description("Analyze frontend performance of a given URL")
-  .version("0.1.1")
+  .version(version)
   .option("-u, --url <url...>", "One or more URLs to analyze")
   .option("--input <file>", "Load URLs from a .txt or .json file")
   .option("-o, --output <file>", "Save HTML report to file")
