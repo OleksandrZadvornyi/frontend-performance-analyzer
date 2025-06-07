@@ -233,14 +233,43 @@ async function runLighthouse(url) {
     ],
   });
 
-  const result = await lighthouse(url, {
-    port: 9222,
-    output: "html",
-    logLevel: "error",
-  });
+  // Capture console output to filter Lighthouse internal errors
+  const originalConsoleError = console.error;
+  const lighthouseErrors = [];
 
-  await browser.close();
-  return result;
+  console.error = (...args) => {
+    const message = args.join(" ");
+    if (
+      message.includes("LanternError") ||
+      message.includes("Invalid dependency graph")
+    ) {
+      lighthouseErrors.push(message);
+      // Show a cleaner warning instead of the full stack trace
+      if (lighthouseErrors.length === 1) {
+        console.warn(
+          chalk.yellow(
+            "  └─ ⚠️  Lighthouse internal warning (analysis will continue)"
+          )
+        );
+      }
+    } else {
+      originalConsoleError(...args);
+    }
+  };
+
+  try {
+    const result = await lighthouse(url, {
+      port: 9222,
+      output: "html",
+      logLevel: "error",
+    });
+
+    return result;
+  } finally {
+    // Restore original console.error
+    console.error = originalConsoleError;
+    await browser.close();
+  }
 }
 
 (async () => {
@@ -291,7 +320,7 @@ async function runLighthouse(url) {
         if (actualScore < options.threshold) {
           console.warn(
             chalk.red(
-              `⚠️ Score ${actualScore} is below threshold of ${options.threshold}`
+              `⚠️  Score ${actualScore} is below threshold of ${options.threshold}`
             )
           );
           process.exitCode = 1; // does not exit immediately, just sets failure
@@ -317,7 +346,7 @@ async function runLighthouse(url) {
 
   if (urls.length > accessibleUrls.length) {
     console.log(
-      `${chalk.yellow("⚠️ Skipped (inaccessible):")} ${
+      `${chalk.yellow("⚠️  Skipped (inaccessible):")} ${
         urls.length - accessibleUrls.length
       }`
     );
