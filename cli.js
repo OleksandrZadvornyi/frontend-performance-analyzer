@@ -185,24 +185,41 @@ function getUrlList(options) {
 async function validateUrlAccessibility(urls) {
   console.log(chalk.blue("🔍 Checking URL accessibility..."));
 
+  const accessibleUrls = [];
   const inaccessibleUrls = [];
 
   for (const url of urls) {
+    process.stdout.write(`  Checking ${url}... `);
     const isAccessible = await checkUrlAccessibility(url);
-    if (!isAccessible) {
+    if (isAccessible) {
+      console.log(chalk.green("✅"));
+      accessibleUrls.push(url);
+    } else {
+      console.log(chalk.red("❌"));
       inaccessibleUrls.push(url);
     }
   }
 
   if (inaccessibleUrls.length > 0) {
-    console.error(
-      chalk.red(`❌ Error: The following URLs are not accessible:`)
+    console.warn(
+      chalk.yellow(
+        `⚠️  Warning: ${inaccessibleUrls.length} URL(s) are not accessible and will be skipped:`
+      )
     );
-    inaccessibleUrls.forEach((url) => console.error(`  - ${url}`));
+    inaccessibleUrls.forEach((url) => console.warn(`  - ${url}`));
+  }
+
+  if (accessibleUrls.length === 0) {
+    console.error(chalk.red("❌ Error: No accessible URLs found"));
     process.exit(1);
   }
 
-  console.log(chalk.green("✅ All URLs are accessible"));
+  console.log(
+    chalk.green(
+      `✅ ${accessibleUrls.length} URL(s) are accessible and will be analyzed\n`
+    )
+  );
+  return accessibleUrls;
 }
 
 async function runLighthouse(url) {
@@ -232,13 +249,27 @@ async function runLighthouse(url) {
 
   const urls = getUrlList(options);
 
-  // Check URL accessibility
-  await validateUrlAccessibility(urls);
+  // Check URL accessibility and get only accessible ones
+  const accessibleUrls = await validateUrlAccessibility(urls);
 
-  for (const url of urls) {
+  console.log(chalk.blue.bold("🚀 Starting Lighthouse analysis...\n"));
+
+  let successCount = 0;
+  let failureCount = 0;
+
+  for (let i = 0; i < accessibleUrls.length; i++) {
+    const url = accessibleUrls[i];
+    const progress = `[${i + 1}/${accessibleUrls.length}]`;
+
+    console.log(chalk.blue(`${progress} 🔍 Analyzing ${url}...`));
+
     try {
+      console.log(chalk.gray("  └─ Launching browser..."));
       const { lhr, report } = await runLighthouse(url);
+      console.log(chalk.gray("  └─ Analysis complete!"));
+
       formatMetrics(lhr);
+      successCount++;
 
       if (options.json) {
         console.log(JSON.stringify(lhr, null, 2));
@@ -247,6 +278,7 @@ async function runLighthouse(url) {
       if (options.output) {
         const safeUrl = url.replace(/https?:\/\//, "").replace(/[^\w]/g, "_");
         fs.writeFileSync(`${safeUrl}.html`, report);
+        console.log(chalk.gray(`  └─ HTML report saved to ${safeUrl}.html`));
       }
 
       if (options.markdown) {
@@ -266,8 +298,28 @@ async function runLighthouse(url) {
         }
       }
     } catch (err) {
-      console.error(`❌ Failed for ${url}:`, err.message);
+      console.error(chalk.red(`  └─ ❌ Failed: ${err.message}`));
+      failureCount++;
       process.exitCode = 1;
     }
+
+    // Add spacing between analyses
+    if (i < accessibleUrls.length - 1) {
+      console.log();
+    }
+  }
+
+  // Final summary
+  console.log(chalk.blue.bold("\n📋 Analysis Summary:"));
+  console.log(`${chalk.green("✅ Successful:")} ${successCount}`);
+  console.log(`${chalk.red("❌ Failed:")} ${failureCount}`);
+  console.log(`${chalk.blue("📊 Total analyzed:")} ${accessibleUrls.length}`);
+
+  if (urls.length > accessibleUrls.length) {
+    console.log(
+      `${chalk.yellow("⚠️ Skipped (inaccessible):")} ${
+        urls.length - accessibleUrls.length
+      }`
+    );
   }
 })();
