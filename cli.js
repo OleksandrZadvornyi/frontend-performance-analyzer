@@ -39,6 +39,19 @@ function isValidUrl(string) {
   }
 }
 
+async function checkUrlAccessibility(url) {
+  try {
+    const response = await fetch(url, {
+      method: "HEAD",
+      timeout: 10000,
+      signal: AbortSignal.timeout(10000),
+    });
+    return response.ok || response.status < 400;
+  } catch {
+    return false;
+  }
+}
+
 function validateInputs(options) {
   // Check if at least one URL source is provided
   if (!options.url && !options.input) {
@@ -153,10 +166,10 @@ function getUrlList(options) {
     urls = options.url;
   }
 
-  // Validate all URLs
+  // Validate all URLs format
   const invalidUrls = urls.filter((url) => !isValidUrl(url));
   if (invalidUrls.length > 0) {
-    console.error(chalk.red(`❌ Error: Invalid URLs found:`));
+    console.error(chalk.red(`❌ Error: Invalid URL format:`));
     invalidUrls.forEach((url) => console.error(`  - ${url}`));
     process.exit(1);
   }
@@ -167,6 +180,29 @@ function getUrlList(options) {
   }
 
   return urls;
+}
+
+async function validateUrlAccessibility(urls) {
+  console.log(chalk.blue("🔍 Checking URL accessibility..."));
+
+  const inaccessibleUrls = [];
+
+  for (const url of urls) {
+    const isAccessible = await checkUrlAccessibility(url);
+    if (!isAccessible) {
+      inaccessibleUrls.push(url);
+    }
+  }
+
+  if (inaccessibleUrls.length > 0) {
+    console.error(
+      chalk.red(`❌ Error: The following URLs are not accessible:`)
+    );
+    inaccessibleUrls.forEach((url) => console.error(`  - ${url}`));
+    process.exit(1);
+  }
+
+  console.log(chalk.green("✅ All URLs are accessible"));
 }
 
 async function runLighthouse(url) {
@@ -195,6 +231,9 @@ async function runLighthouse(url) {
   validateInputs(options);
 
   const urls = getUrlList(options);
+
+  // Check URL accessibility
+  await validateUrlAccessibility(urls);
 
   for (const url of urls) {
     try {
