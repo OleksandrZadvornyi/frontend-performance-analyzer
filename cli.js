@@ -30,6 +30,56 @@ program
 
 const options = program.opts();
 
+function isValidUrl(string) {
+  try {
+    const url = new URL(string);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+function validateInputs(options) {
+  // Check if at least one URL source is provided
+  if (!options.url && !options.input) {
+    console.error(
+      chalk.red("❌ Error: Please provide URLs using --url or --input")
+    );
+    process.exit(1);
+  }
+
+  // Validate threshold if provided
+  if (options.threshold !== undefined) {
+    if (
+      isNaN(options.threshold) ||
+      options.threshold < 0 ||
+      options.threshold > 100
+    ) {
+      console.error(
+        chalk.red("❌ Error: Threshold must be a number between 0 and 100")
+      );
+      process.exit(1);
+    }
+  }
+
+  // Validate input file exists
+  if (options.input) {
+    const filePath = path.resolve(process.cwd(), options.input);
+    if (!fs.existsSync(filePath)) {
+      console.error(
+        chalk.red(`❌ Error: Input file "${options.input}" does not exist`)
+      );
+      process.exit(1);
+    }
+
+    // Check file extension
+    if (!filePath.endsWith(".txt") && !filePath.endsWith(".json")) {
+      console.error(chalk.red("❌ Error: Input file must be .txt or .json"));
+      process.exit(1);
+    }
+  }
+}
+
 function formatMetrics(lhr) {
   const audits = lhr.audits;
 
@@ -83,18 +133,37 @@ function getUrlList(options) {
 
   if (options.input) {
     const filePath = path.resolve(process.cwd(), options.input);
-    const content = fs.readFileSync(filePath, "utf-8");
+    try {
+      const content = fs.readFileSync(filePath, "utf-8");
 
-    if (filePath.endsWith(".json")) {
-      urls = JSON.parse(content);
-    } else {
-      urls = content
-        .split("\n")
-        .map((line) => line.trim())
-        .filter(Boolean);
+      if (filePath.endsWith(".json")) {
+        const parsed = JSON.parse(content);
+        urls = Array.isArray(parsed) ? parsed : [parsed];
+      } else {
+        urls = content
+          .split("\n")
+          .map((line) => line.trim())
+          .filter(Boolean);
+      }
+    } catch (error) {
+      console.error(chalk.red(`❌ Error reading input file: ${error.message}`));
+      process.exit(1);
     }
   } else if (options.url) {
     urls = options.url;
+  }
+
+  // Validate all URLs
+  const invalidUrls = urls.filter((url) => !isValidUrl(url));
+  if (invalidUrls.length > 0) {
+    console.error(chalk.red(`❌ Error: Invalid URLs found:`));
+    invalidUrls.forEach((url) => console.error(`  - ${url}`));
+    process.exit(1);
+  }
+
+  if (urls.length === 0) {
+    console.error(chalk.red("❌ Error: No valid URLs found"));
+    process.exit(1);
   }
 
   return urls;
@@ -114,7 +183,7 @@ async function runLighthouse(url) {
   const result = await lighthouse(url, {
     port: 9222,
     output: "html",
-    logLevel: "info",
+    logLevel: "error",
   });
 
   await browser.close();
@@ -122,6 +191,9 @@ async function runLighthouse(url) {
 }
 
 (async () => {
+  // Validate inputs before processing
+  validateInputs(options);
+
   const urls = getUrlList(options);
 
   for (const url of urls) {
