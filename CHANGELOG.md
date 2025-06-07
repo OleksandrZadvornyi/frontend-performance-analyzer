@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.5](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/compare/v0.1.4...v0.1.5) (2025-06-07)
+
+
+### ✨ Features
+
+* add input validation with error messages ([82bc71f](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/82bc71f1adb4f8f2a0240b1693290b891aceeb47))
+* continue on URL failures ([5380ea6](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/5380ea6f1ffa7512fa7ab564cd2f9d65ec79ade4))
+* optimize browser launch configuration ([cd46aea](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/cd46aea3b00ab25354552d546a2b333e7a1b8e34))
+
+
+### 🐛 Bug Fixes
+
+* check URL accessibility before analyzing ([b5d710f](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/b5d710fc7a9252032d35cc9557c4fae35cfcd0a0))
+* get version directly from `package.json` ([60d27f6](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/60d27f60d62d5a7bad3438d25a7ffa3d2ee704e5))
+* handle Lighthouse internal errors ([f79bce3](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/f79bce3a6f6d61e90879d86cb3aae0abb756eefa))
+
 ### [0.1.4](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/compare/v0.1.3...v0.1.4) (2025-06-06)
 
 
