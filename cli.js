@@ -98,8 +98,13 @@ function getUrlList(options) {
 
 async function runLighthouse(url) {
   const browser = await puppeteer.launch({
-    headless: true,
-    args: ["--remote-debugging-port=9222"],
+    headless: "new",
+    args: [
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-dev-shm-usage",
+      "--remote-debugging-port=9222",
+    ],
   });
 
   const result = await lighthouse(url, {
