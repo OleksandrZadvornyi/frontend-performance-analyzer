@@ -20,6 +20,7 @@ program
   .option("--input <file>", "Load URLs from a .txt or .json file")
   .option("-o, --output <file>", "Save HTML report to file")
   .option("--json", "Print raw JSON report to stdout")
+  .option("--json-file <file>", "Save JSON report to file")
   .option("--markdown <file>", "Save metrics as Markdown report")
   .option(
     "--threshold <score>",
@@ -113,6 +114,83 @@ function formatMetrics(lhr) {
   for (const [key, value] of Object.entries(metrics)) {
     console.log(`${chalk.cyan(key)}: ${chalk.white(value)}`);
   }
+}
+
+function exportJson(lhResults, filePath = null) {
+  const jsonOutput = {
+    timestamp: new Date().toISOString(),
+    tool: "frontend-performance-analyzer",
+    version: version,
+    results: [],
+  };
+
+  // Handle single result or array of results
+  const results = Array.isArray(lhResults) ? lhResults : [lhResults];
+
+  results.forEach(({ lhr, url }) => {
+    const performanceScore = lhr.categories.performance.score * 100;
+    const audits = lhr.audits;
+
+    jsonOutput.results.push({
+      url: lhr.finalUrl || url,
+      timestamp: lhr.fetchTime,
+      performance: {
+        score: performanceScore,
+        metrics: {
+          firstContentfulPaint: {
+            value: audits["first-contentful-paint"].numericValue,
+            displayValue: audits["first-contentful-paint"].displayValue,
+            score: audits["first-contentful-paint"].score,
+          },
+          speedIndex: {
+            value: audits["speed-index"].numericValue,
+            displayValue: audits["speed-index"].displayValue,
+            score: audits["speed-index"].score,
+          },
+          largestContentfulPaint: {
+            value: audits["largest-contentful-paint"].numericValue,
+            displayValue: audits["largest-contentful-paint"].displayValue,
+            score: audits["largest-contentful-paint"].score,
+          },
+          timeToInteractive: {
+            value: audits["interactive"].numericValue,
+            displayValue: audits["interactive"].displayValue,
+            score: audits["interactive"].score,
+          },
+          totalBlockingTime: {
+            value: audits["total-blocking-time"].numericValue,
+            displayValue: audits["total-blocking-time"].displayValue,
+            score: audits["total-blocking-time"].score,
+          },
+          cumulativeLayoutShift: {
+            value: audits["cumulative-layout-shift"].numericValue,
+            displayValue: audits["cumulative-layout-shift"].displayValue,
+            score: audits["cumulative-layout-shift"].score,
+          },
+        },
+        categories: {
+          performance: lhr.categories.performance.score,
+          accessibility: lhr.categories.accessibility?.score,
+          bestPractices: lhr.categories["best-practices"]?.score,
+          seo: lhr.categories.seo?.score,
+          pwa: lhr.categories.pwa?.score,
+        },
+      },
+      // Include raw Lighthouse data if needed
+      rawLighthouseData: options.includeRaw ? lhr : undefined,
+    });
+  });
+
+  const jsonString = JSON.stringify(jsonOutput, null, 2);
+
+  if (filePath) {
+    fs.writeFileSync(filePath, jsonString, "utf8");
+    console.log(chalk.gray(`  └─ JSON report saved to ${filePath}`));
+  } else {
+    console.log(jsonString);
+  }
+
+  return jsonOutput;
 }
 
 function exportMarkdown(lhr, filePath) {
@@ -280,6 +358,7 @@ async function runLighthouse(url) {
 
   // Check URL accessibility and get only accessible ones
   const accessibleUrls = await validateUrlAccessibility(urls);
+  const allResults = []; // Store all results for batch JSON export
 
   console.log(chalk.blue.bold("🚀 Starting Lighthouse analysis...\n"));
 
@@ -297,7 +376,13 @@ async function runLighthouse(url) {
       const { lhr, report } = await runLighthouse(url);
       console.log(chalk.gray("  └─ Analysis complete!"));
 
-      formatMetrics(lhr);
+      // Store result for batch processing
+      allResults.push({ lhr, url, report });
+
+      if (!options.json || options.jsonFile) {
+        formatMetrics(lhr);
+      }
+
       successCount++;
 
       if (options.json) {
@@ -313,6 +398,11 @@ async function runLighthouse(url) {
       if (options.markdown) {
         const safeUrl = url.replace(/https?:\/\//, "").replace(/[^\w]/g, "_");
         exportMarkdown(lhr, `${safeUrl}.md`);
+      }
+
+      // Individual JSON file export
+      if (options.jsonFile && accessibleUrls.length === 1) {
+        exportJson({ lhr, url }, options.jsonFile);
       }
 
       if (options.threshold !== undefined) {
@@ -336,6 +426,15 @@ async function runLighthouse(url) {
     if (i < accessibleUrls.length - 1) {
       console.log();
     }
+  }
+
+  // Batch JSON export
+  if (options.json) {
+    exportJson(allResults);
+  }
+
+  if (options.jsonFile && accessibleUrls.length > 1) {
+    exportJson(allResults, options.jsonFile);
   }
 
   // Final summary
