@@ -2,7 +2,7 @@
 import { Command } from "commander";
 import fs from "fs";
 import chalk from "chalk";
-import { logger, OUTPUT_LEVELS } from "./lib/logger.js";
+import { logger, OUTPUT_LEVELS, configureLogger } from "./lib/logger.js";
 import {
   validateInputs,
   getUrlList,
@@ -38,6 +38,7 @@ program
   .parse(process.argv);
 
 const options = program.opts();
+configureLogger(options);
 
 // Validate mutually exclusive flags
 if (options.verbose && options.silent) {

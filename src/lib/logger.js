@@ -6,7 +6,7 @@ export const OUTPUT_LEVELS = {
   VERBOSE: 2,
 };
 
-export const outputLevel = OUTPUT_LEVELS.NORMAL;
+export let outputLevel = OUTPUT_LEVELS.NORMAL;
 
 export function configureLogger(options) {
   outputLevel = options.silent
