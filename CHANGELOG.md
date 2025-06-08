@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/compare/v0.1.7...v0.2.0) (2025-06-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* modularize code into separate files
+
+### 🛠 Maintenance
+
+* add keywords to `package.json` ([8b71ee2](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/8b71ee2ba12c46febc19d8322dfc641f1c51996a))
+
+
+### ♻️ Code Refactoring
+
+* modularize code into separate files ([d78e86a](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/d78e86a78ed2c51b25d4726127840b70e2b3e622))
+
+
+### 🐛 Bug Fixes
+
+* configure logger for silent of verbose modes ([18341ec](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/18341ec86b5714525ecbc00a598055b2c2498967))
+
+
+### 📝 Documentation
+
+* update `README.md` ([4ea0e61](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/4ea0e61f4f891ef624518e5a36f3786f5c05fab3))
+
 ### [0.1.7](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/compare/v0.1.6...v0.1.7) (2025-06-08)
 
 
