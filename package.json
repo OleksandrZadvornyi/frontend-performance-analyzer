@@ -10,7 +10,15 @@
   "scripts": {},
   "author": "Oleksandr",
   "license": "MIT",
-  "keywords": [],
+  "keywords": [
+    "cli",
+    "audit",
+    "performance",
+    "developer-tools",
+    "lighthouse",
+    "puppeteer",
+    "lighthouse-cli"
+  ],
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
