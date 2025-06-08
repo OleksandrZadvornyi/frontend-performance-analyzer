@@ -1,6 +1,6 @@
 {
   "name": "frontend-performance-analyzer",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "CLI to analyze frontend performance using Lighthouse",
   "type": "module",
   "main": "./cli.js",

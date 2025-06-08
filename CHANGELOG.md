@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.7](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/compare/v0.1.6...v0.1.7) (2025-06-08)
+
+
+### ✨ Features
+
+* add `--json-file <file>` export option ([fca6228](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/fca62282c090356cd6fe5e94d27c2d856bb2fa21))
+* add `--verbose` and `--silent` mode flags ([88eea69](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/88eea697cddb968bf166328523dbffb05690f1c9))
+* improve Markdown formatting ([e3a49db](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/e3a49db1266232272166d9f94499505d03e24e7c))
+
 ### [0.1.6](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/compare/v0.1.5...v0.1.6) (2025-06-07)
 
 
