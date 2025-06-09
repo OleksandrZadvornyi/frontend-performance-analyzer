@@ -7,7 +7,12 @@
   "bin": {
     "frontend-performance-analyzer": "./src/cli.js"
   },
-  "scripts": {},
+  "scripts": {
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest --watch"
+  },
   "author": "Oleksandr",
   "license": "MIT",
   "keywords": [
@@ -28,5 +33,9 @@
     "commander": "^14.0.0",
     "lighthouse": "^12.6.1",
     "puppeteer": "^24.10.0"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^2.1.9",
+    "vitest": "^2.1.9"
   }
 }
