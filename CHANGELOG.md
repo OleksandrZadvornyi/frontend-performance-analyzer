@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/compare/v0.2.0...v0.3.0) (2025-06-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* add test coverage
+
+### 🐛 Bug Fixes
+
+* delete unused script ([492074b](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/492074bc3e0664a3b24386d5239e66fd6b3c1511))
+
+
+### 🛠 Maintenance
+
+* create a Vitest configuration file ([83cba3a](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/83cba3a316cdc1cb71cea5ece7bbe63d14fa618b))
+* **deps:** add testing dependencies ([e07b0eb](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/e07b0eb4fd45fffad7ceef4ef5658bdc2fe709af))
+
+
+### ✅ Testing
+
+* add test coverage ([3c2a367](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/3c2a3679d0940d08aefedcdc7354597f55c7b164))
+
 ## [0.2.0](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/compare/v0.1.7...v0.2.0) (2025-06-08)
 
 
