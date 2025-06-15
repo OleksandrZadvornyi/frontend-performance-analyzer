@@ -6,30 +6,58 @@ export const OUTPUT_LEVELS = {
   VERBOSE: 2,
 };
 
-export let outputLevel = OUTPUT_LEVELS.NORMAL;
+class Logger {
+  constructor(initialLevel = OUTPUT_LEVELS.NORMAL) {
+    this.outputLevel = initialLevel;
+  }
 
-export function configureLogger(options) {
-  outputLevel = options.silent
-    ? OUTPUT_LEVELS.SILENT
-    : options.verbose
-    ? OUTPUT_LEVELS.VERBOSE
-    : OUTPUT_LEVELS.NORMAL;
+  configure(options) {
+    if (options.silent) {
+      this.outputLevel = OUTPUT_LEVELS.SILENT;
+    } else if (options.verbose) {
+      this.outputLevel = OUTPUT_LEVELS.VERBOSE;
+    } else {
+      this.outputLevel = OUTPUT_LEVELS.NORMAL;
+    }
+  }
+
+  getOutputLevel() {
+    return this.outputLevel;
+  }
+
+  #logIfLevelMet(logFn, message, minLevel) {
+    if (this.outputLevel >= minLevel) {
+      logFn(message);
+    }
+  }
+
+  info(message, minLevel = OUTPUT_LEVELS.NORMAL) {
+    this.#logIfLevelMet(console.log, message, minLevel);
+  }
+
+  verbose(message) {
+    this.#logIfLevelMet(
+      console.log,
+      chalk.gray(`[VERBOSE] ${message}`),
+      OUTPUT_LEVELS.VERBOSE
+    );
+  }
+
+  error(message) {
+    console.error(chalk.red(`❌ ${message}`));
+  }
+
+  warn(message, minLevel = OUTPUT_LEVELS.NORMAL) {
+    this.#logIfLevelMet(console.warn, chalk.yellow(`⚠️  ${message}`), minLevel);
+  }
+
+  success(message, minLevel = OUTPUT_LEVELS.NORMAL) {
+    this.#logIfLevelMet(console.log, chalk.green(`✅ ${message}`), minLevel);
+  }
 }
 
-export const logger = {
-  info: (message, minLevel = OUTPUT_LEVELS.NORMAL) => {
-    if (outputLevel >= minLevel) console.log(message);
-  },
-  verbose: (message) => {
-    if (outputLevel >= OUTPUT_LEVELS.VERBOSE) {
-      console.log(chalk.gray(`[VERBOSE] ${message}`));
-    }
-  },
-  error: (message) => console.error(chalk.red(`❌ ${message}`)),
-  warn: (message, minLevel = OUTPUT_LEVELS.NORMAL) => {
-    if (outputLevel >= minLevel) console.warn(chalk.yellow(`⚠️  ${message}`));
-  },
-  success: (message, minLevel = OUTPUT_LEVELS.NORMAL) => {
-    if (outputLevel >= minLevel) console.log(chalk.green(`✅ ${message}`));
-  },
-};
+// Export a default instance for convenience
+export const logger = new Logger();
+
+// Also export the class for custom instances
+export { Logger };
