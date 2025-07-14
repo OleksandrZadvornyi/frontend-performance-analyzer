@@ -3,7 +3,6 @@ import lighthouse from "lighthouse";
 import { logger } from "./logger.js";
 import { exportJsonReport } from "../report-formatters/json.js";
 import { exportMarkdownReport } from "../report-formatters/markdown.js";
-import { formatConsoleMetrics } from "../report-formatters/console.js";
 
 export async function analyzeUrls(urls, options) {
   const results = [];
