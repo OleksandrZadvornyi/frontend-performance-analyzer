@@ -2,8 +2,7 @@ import { logger, OUTPUT_LEVELS } from "../lib/logger.js";
 import chalk from "chalk";
 import fs from "fs";
 
-const packageJson = JSON.parse(fs.readFileSync("package.json", "utf8"));
-const version = packageJson.version;
+const version = JSON.parse(fs.readFileSync("package.json", "utf8")).version;
 
 export function exportJsonReport(lhResults, filePath = null) {
   logger.verbose("Starting JSON export...");
