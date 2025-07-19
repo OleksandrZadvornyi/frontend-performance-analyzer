@@ -2,8 +2,7 @@ import { logger, OUTPUT_LEVELS } from "../lib/logger.js";
 import chalk from "chalk";
 import fs from "fs";
 
-const packageJson = JSON.parse(fs.readFileSync("package.json", "utf8"));
-const version = packageJson.version;
+const version = JSON.parse(fs.readFileSync("package.json", "utf8")).version;
 
 function getScoreBadge(score) {
   const percentage = Math.round(score * 100);
