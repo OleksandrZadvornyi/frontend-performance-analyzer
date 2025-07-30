@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.1](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/compare/v0.3.0...v0.3.1) (2025-07-30)
+
+
+### ✨ Features
+
+* rewrite logger logic using classes ([02b56f0](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/02b56f025069d51f31e68232bffc0760289235eb))
+
+
+### ♻️ Code Refactoring
+
+* shorten version parsing in json export ([e1f43a2](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/e1f43a21095096fefe985ae47413ef47cb97c249))
+* shorten version parsing in md export ([e609440](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/e60944018582a8cb3f84eef57ef54f0c1c94ece4))
+
+
+### 🐛 Bug Fixes
+
+* configure logger using options from cli ([310b2f0](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/310b2f0dd92be52570458f199ac09c4b0de08aed))
+* remove unused import ([0c0f099](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/0c0f0995887ace371413d5f32469d72565b975a7))
+
 ## [0.3.0](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/compare/v0.2.0...v0.3.0) (2025-06-09)
 
 
