@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import chalk from "chalk";
-import { logger, outputLevel, OUTPUT_LEVELS } from "./logger.js";
+import { OUTPUT_LEVELS } from "./logger.js";
 
 export function isValidUrl(string) {
   try {
@@ -12,7 +12,7 @@ export function isValidUrl(string) {
   }
 }
 
-export function validateInputs(options) {
+export function validateInputs(options, logger) {
   logger.verbose("Validating input options...");
 
   // Check if at least one URL source is provided
@@ -59,7 +59,7 @@ export function validateInputs(options) {
   logger.verbose("Input validation completed successfully");
 }
 
-export function getUrlList(options) {
+export function getUrlList(options, logger) {
   logger.verbose("Extracting URL list from options...");
   let urls = [];
 
@@ -109,7 +109,7 @@ export function getUrlList(options) {
   return urls;
 }
 
-async function checkUrlAccessibility(url) {
+async function checkUrlAccessibility(url, logger) {
   logger.verbose(`Checking accessibility for: ${url}`);
   try {
     const startTime = Date.now();
@@ -129,7 +129,7 @@ async function checkUrlAccessibility(url) {
   }
 }
 
-export async function validateUrlAccessibility(urls) {
+export async function validateUrlAccessibility(urls, logger) {
   logger.info(chalk.blue("🔍 Checking URL accessibility..."));
   logger.verbose(`Starting accessibility check for ${urls.length} URLs`);
 
@@ -139,13 +139,10 @@ export async function validateUrlAccessibility(urls) {
   for (let i = 0; i < urls.length; i++) {
     const url = urls[i];
     logger.verbose(`Checking URL ${i + 1}/${urls.length}: ${url}`);
-
-    if (outputLevel >= OUTPUT_LEVELS.NORMAL) {
-      process.stdout.write(`  Checking ${url}... `);
-    }
+    logger.info(`  Checking ${url}... `, OUTPUT_LEVELS.NORMAL);
 
     const startTime = Date.now();
-    const isAccessible = await checkUrlAccessibility(url);
+    const isAccessible = await checkUrlAccessibility(url, logger);
     const duration = Date.now() - startTime;
 
     if (isAccessible) {

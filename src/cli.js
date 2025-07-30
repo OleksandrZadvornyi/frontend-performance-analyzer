@@ -2,7 +2,7 @@
 import { Command } from "commander";
 import fs from "fs";
 import chalk from "chalk";
-import { logger, OUTPUT_LEVELS, configureLogger } from "./lib/logger.js";
+import { Logger, OUTPUT_LEVELS } from "./lib/logger.js";
 import {
   validateInputs,
   getUrlList,
@@ -38,7 +38,6 @@ program
   .parse(process.argv);
 
 const options = program.opts();
-configureLogger(options);
 
 // Validate mutually exclusive flags
 if (options.verbose && options.silent) {
@@ -47,6 +46,9 @@ if (options.verbose && options.silent) {
   );
   process.exit(1);
 }
+
+const logger = new Logger();
+logger.configure(options);
 
 (async () => {
   const startTime = Date.now();
@@ -58,12 +60,12 @@ if (options.verbose && options.silent) {
   logger.verbose(`Options: ${JSON.stringify(options, null, 2)}`);
 
   // Validate inputs before processing
-  validateInputs(options);
+  validateInputs(options, logger);
 
-  const urls = getUrlList(options);
+  const urls = getUrlList(options, logger);
 
   // Check URL accessibility and get only accessible ones
-  const accessibleUrls = await validateUrlAccessibility(urls);
+  const accessibleUrls = await validateUrlAccessibility(urls, logger);
   const allResults = []; // Store all results for batch JSON export
 
   logger.info(chalk.blue.bold("🚀 Starting Lighthouse analysis...\n"));
