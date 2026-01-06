@@ -17,13 +17,16 @@ program
   .requiredOption("-u, --url <url>", "The URL to analyze")
   .option("-o, --output <path>", "Save the full HTML report to a file")
   .option("-t, --threshold <number>", "Performance threshold (0-100). Fail if score is below this.")
+  .option("-p, --preset <type>", "Device preset: mobile or desktop", "mobile")
+  .option("--no-throttle", "Disable network and CPU throttling")
   .action(async (options) => {
-    const { url, output, threshold } = options;
+    const { url, output, threshold, preset, throttle } = options;
 
     console.log(chalk.blue(`🔍 Analyzing ${url}...`));
+    console.log(chalk.gray(`   Preset: ${preset} | Throttling: ${throttle ? "Enabled" : "Disabled"}`));
 
     try {
-      const { lhr, report } = await runAnalysis(url);
+      const { lhr, report } = await runAnalysis(url, { preset, throttle });
 
       // Show CLI Metrics
       printMetrics(lhr);
