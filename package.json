@@ -1,6 +1,6 @@
 {
   "name": "fpa",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Lightweight CLI to analyze frontend performance",
   "type": "module",
   "main": "./src/cli.js",

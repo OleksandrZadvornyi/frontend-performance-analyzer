@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.2](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/compare/v0.3.1...v0.3.2) (2026-01-06)
+
+
+### ✅ Testing
+
+* remove Vitest and related test files ([e73ec7f](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/e73ec7f8d0a4fba539f51e1a06a8d7f73a773345))
+
 ### [0.3.1](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/compare/v0.3.0...v0.3.1) (2025-07-30)
 
 
