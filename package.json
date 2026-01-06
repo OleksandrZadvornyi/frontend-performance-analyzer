@@ -1,13 +1,13 @@
 {
-  "name": "fpa",
+  "name": "fpa-cli",
   "version": "0.3.2",
   "description": "Lightweight CLI to analyze frontend performance",
   "type": "module",
   "main": "./src/cli.js",
   "bin": {
-    "fpa": "./src/cli.js"
+    "fpa-cli": "./src/cli.js"
   },
-  "author": "Oleksandr",
+  "author": "Oleksandr Zadvornyi",
   "license": "MIT",
   "keywords": [
     "cli",

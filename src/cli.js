@@ -11,7 +11,7 @@ const packageJson = JSON.parse(fs.readFileSync(new URL("../package.json", import
 const program = new Command();
 
 program
-  .name("frontend-performance-analyzer")
+  .name("fpa-cli")
   .version(packageJson.version)
   .description("Lightweight CLI to analyze frontend performance")
   .requiredOption("-u, --url <url>", "The URL to analyze")
