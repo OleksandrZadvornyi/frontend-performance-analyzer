@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/compare/v0.3.2...v1.0.0) (2026-01-06)
+
+
+### 🛠 Maintenance
+
+* rename CLI to fpa-cli ([6215421](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/6215421467ab9a34d11dd91a155a2785d9ea5f9d))
+
+
+### 📝 Documentation
+
+* expand README with usage and contribution details ([bf5d399](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/bf5d399adf5e559fb61ab128e67522318b5e69c6))
+* update README ([81618aa](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/81618aa49cda673dc9b3cc579f9d1490ec7e2aa7))
+
 ### [0.3.2](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/compare/v0.3.1...v0.3.2) (2026-01-06)
 
 

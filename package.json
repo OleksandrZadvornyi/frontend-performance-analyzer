@@ -1,6 +1,6 @@
 {
   "name": "fpa-cli",
-  "version": "0.3.2",
+  "version": "1.0.0",
   "description": "Lightweight CLI to analyze frontend performance",
   "type": "module",
   "main": "./src/cli.js",
@@ -9,6 +9,9 @@
   },
   "author": "Oleksandr Zadvornyi",
   "license": "MIT",
+  "scripts": {
+    "release": "standard-version"
+  },
   "keywords": [
     "cli",
     "audit",
@@ -27,5 +30,8 @@
     "commander": "^14.0.0",
     "lighthouse": "^12.6.1",
     "puppeteer": "^24.10.0"
+  },
+  "devDependencies": {
+    "standard-version": "^9.5.0"
   }
 }
