@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/compare/v1.0.1...v1.1.0) (2026-01-06)
+
+
+### ✨ Features
+
+* add device preset and throttling options ([1602264](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/1602264e48e1c9bc057ad24e9ff0bc7c57191c26))
+* add multiple runs option and median selection ([47ae60d](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/47ae60d741855c16bc3690fc263382f5f9fbbaf8))
+* add performance threshold option to CLI ([fc8a3ab](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/fc8a3ab034103ffc9978886766ab743cc3a47fd5))
+
+
+### 📝 Documentation
+
+* update README with new features and usage examples ([ce60014](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/ce600145b10c375d4709f589648d5fe986a1fcf2))
+
 ### [1.0.1](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/compare/v1.0.0...v1.0.1) (2026-01-06)
 
 ## [1.0.0](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/compare/v0.3.2...v1.0.0) (2026-01-06)
