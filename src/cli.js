@@ -16,21 +16,43 @@ program
   .description("Lightweight CLI to analyze frontend performance")
   .requiredOption("-u, --url <url>", "The URL to analyze")
   .option("-o, --output <path>", "Save the full HTML report to a file")
+  .option("-t, --threshold <number>", "Performance threshold (0-100). Fail if score is below this.")
   .action(async (options) => {
-    const { url, output } = options;
+    const { url, output, threshold } = options;
 
     console.log(chalk.blue(`🔍 Analyzing ${url}...`));
 
     try {
       const { lhr, report } = await runAnalysis(url);
 
-      // 1. Show CLI Metrics
+      // Show CLI Metrics
       printMetrics(lhr);
 
-      // 2. Save HTML Report (if requested)
+      // Save HTML Report (if requested)
       if (output) {
         fs.writeFileSync(output, report);
         console.log(chalk.gray(`📝 HTML report saved to: ${output}`));
+      }
+
+      // Implement Gatekeeper Logic
+      if (threshold) {
+        const score = lhr.categories.performance.score * 100;
+        const thresholdNum = Number(threshold);
+
+        if (score < thresholdNum) {
+          console.error(
+            chalk.red(
+              `\n❌ Performance Budget Failed: Score ${Math.round(score)} is below threshold ${thresholdNum}.`
+            )
+          );
+          process.exit(1);
+        } else {
+          console.log(
+            chalk.green(
+              `\n✅ Performance Budget Passed: Score ${Math.round(score)} meets threshold ${thresholdNum}.`
+            )
+          );
+        }
       }
 
     } catch (error) {
