@@ -1,4 +1,4 @@
-# fpa-cli 🚀
+# fpa-cli
 
 > **Frontend Performance Analyzer** — A lightweight CLI tool to analyze frontend performance using Google Lighthouse and Puppeteer.
 
@@ -7,15 +7,16 @@
 
 **fpa-cli** helps developers quickly audit web pages from the terminal. It runs a headless browser, captures Core Web Vitals, and provides a concise color-coded summary or a full HTML report.
 
-## ✨ Features
+## Features
 
 * **Automated Audits:** Runs Google Lighthouse programmatically via Puppeteer.
+* **Multi-Device Support:** Switch between **Mobile** (default) and **Desktop** emulation presets.
+* **Performance Budgets:** Set a threshold score; the CLI will exit with an error if the site fails (perfect for CI/CD pipelines).
+* **Reliability:** Run multiple audits automatically and select the **median result** to reduce variance.
 * **Core Web Vitals:** Instant checks for LCP, FCP, CLS, TBT, and Speed Index.
-* **Color-Coded Feedback:** Green/Yellow/Red indicators based on performance scores.
 * **Report Export:** Option to save the full Lighthouse HTML report locally.
-* **CI/CD Friendly:** Simple command-line interface suitable for scripts.
 
-## 📦 Installation
+## Installation
 
 You can run it directly using `npx` (recommended) or install it globally.
 
@@ -32,7 +33,7 @@ npm install -g fpa-cli
 
 ## 🛠 Usage
 
-### Basic Analysis
+### Basic Analysis (Mobile Default)
 
 Run a quick performance check on a URL:
 
@@ -40,24 +41,52 @@ Run a quick performance check on a URL:
 fpa-cli -u https://www.google.com
 ```
 
+### Desktop Analysis
+
+Analyze the page using desktop screen emulation settings:
+
+```bash
+fpa-cli -u https://www.google.com --preset desktop
+```
+
+### CI/CD Performance Budget
+
+Fail the build (exit code 1) if the performance score is below 90:
+
+```bash
+fpa-cli -u https://www.google.com --threshold 90
+```
+
+### High Reliability Mode
+
+Run the audit 3 times and select the median result to account for network variance:
+
+```bash
+fpa-cli -u https://www.google.com --runs 3
+```
+
 ### Save HTML Report
 
 Analyze a URL and save the detailed Lighthouse report to a file:
 
 ```bash
-fpa-cli --url https://github.com --output ./report.html
+fpa-cli -u https://github.com -o ./report.html
 ```
 
-## ⚙️ Options
+## Options
 
-| Option | Alias | Description | Required |
+| Option | Alias | Description | Default |
 | --- | --- | --- | --- |
-| `--url <url>` | `-u` | The target URL to analyze | **Yes** |
-| `--output <path>` | `-o` | Path to save the full HTML report | No |
-| `--version` | `-V` | Output the version number | No |
-| `--help` | `-h` | Display help for command | No |
+| `--url <url>` | `-u` | The target URL to analyze | **Required** |
+| `--output <path>` | `-o` | Path to save the full HTML report | `null` |
+| `--threshold <number>` | `-t` | Performance threshold (0-100). Fail if score is below this. | `null` |
+| `--preset <type>` | `-p` | Device preset: `mobile` or `desktop` | `mobile` |
+| `--runs <number>` | `-r` | Number of runs to calculate the median score | `1` |
+| `--no-throttle` |  | Disable network and CPU throttling | `false` |
+| `--version` | `-V` | Output the version number |  |
+| `--help` | `-h` | Display help for command |  |
 
-## 📊 Metrics Explained
+## Metrics Explained
 
 The CLI outputs the following metrics directly to your console:
 
@@ -68,7 +97,7 @@ The CLI outputs the following metrics directly to your console:
 * **CLS (Cumulative Layout Shift):** Visual stability of the page.
 * **Speed Index:** How quickly content is visually displayed.
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome!
 
@@ -78,6 +107,6 @@ Contributions are welcome!
 4. Push to the branch
 5. Open a Pull Request
 
-## 📝 License
+## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
