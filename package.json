@@ -1,11 +1,11 @@
 {
-  "name": "frontend-performance-analyzer",
+  "name": "fpa",
   "version": "0.3.1",
-  "description": "CLI to analyze frontend performance using Lighthouse",
+  "description": "Lightweight CLI to analyze frontend performance",
   "type": "module",
   "main": "./src/cli.js",
   "bin": {
-    "frontend-performance-analyzer": "./src/cli.js"
+    "fpa": "./src/cli.js"
   },
   "author": "Oleksandr",
   "license": "MIT",
