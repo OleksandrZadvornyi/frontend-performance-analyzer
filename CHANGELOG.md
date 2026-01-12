@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.1](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/compare/v1.1.0...v1.1.1) (2026-01-12)
+
+
+### 📝 Documentation
+
+* update year in LICENSE ([efad44e](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/commit/efad44ec4e75e9e501f9007e332ab727da6c4a5f))
+
 ## [1.1.0](https://github.com/OleksandrZadvornyi/frontend-performance-analyzer/compare/v1.0.1...v1.1.0) (2026-01-06)
 
 
